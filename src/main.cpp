@@ -11,6 +11,7 @@
 
 #include "RenderWindow.hpp"
 #include "Entity.hpp"
+#include "Utils.hpp"
 
 using namespace std;
 
@@ -24,36 +25,58 @@ int main(int argv, char* args[])
 
     // opens the game window
     RenderWindow window("GAME v1.0", 1280, 720);
+    int windowRefreshRate = window.getRefreshRate();
+
+    cout << windowRefreshRate << endl;
 
     SDL_Texture* grassTexture = window.loadTexture("res/img/grass_1.png");
 
     vector<Entity> platform;
 
     for (int i = 0; i < 6; i++)
-    {
-        platform.push_back(Entity(i * 64, 0, grassTexture));
-    }
+        platform.push_back(Entity(Vector2f(i * 32, 0), grassTexture));
 
     bool gameRunning = true;
 
     SDL_Event event;
 
+    const float timeStep = 0.01;
+    float accumulator = 0.0;
+    float currentTime = utils::hireTimeInSeconds();
+
     while (gameRunning == true)
     {
-        while (SDL_PollEvent(&event))
+        int startTicks = SDL_GetTicks();
+
+        float newTime = utils::hireTimeInSeconds();
+        float frameTime = newTime - currentTime;
+
+        currentTime = newTime;
+
+        accumulator += frameTime;
+
+        while (accumulator >= timeStep)
         {
-            if (event.type == SDL_QUIT)
-                gameRunning = false;
+            while (SDL_PollEvent(&event))
+                if (event.type == SDL_QUIT)
+                    gameRunning = false;
+
+            accumulator -= timeStep;
         }
+
+        const float alpha = accumulator / timeStep;
 
         window.clear();
 
-        for (int i = 0; i < platform.size(); i++)
-        {
-            window.render(platform[i]);
-        }
+        for (Entity& p : platform)
+            window.render(p);
 
         window.display();
+
+        int frameTicks = SDL_GetTicks() - startTicks;
+
+        if (frameTicks < 1000 / window.getRefreshRate())
+            SDL_Delay(1000 / window.getRefreshRate() - frameTicks);
     }
 
 
