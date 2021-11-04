@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+#include <vector>
 
 #include "RenderWindow.hpp"
 #include "Entity.hpp"
@@ -26,7 +27,12 @@ int main(int argv, char* args[])
 
     SDL_Texture* grassTexture = window.loadTexture("res/img/grass_1.png");
 
-    Entity platform0(300, 300, grassTexture);
+    vector<Entity> platform;
+
+    for (int i = 0; i < 6; i++)
+    {
+        platform.push_back(Entity(i * 64, 0, grassTexture));
+    }
 
     bool gameRunning = true;
 
@@ -41,7 +47,12 @@ int main(int argv, char* args[])
         }
 
         window.clear();
-        window.render(platform0);
+
+        for (int i = 0; i < platform.size(); i++)
+        {
+            window.render(platform[i]);
+        }
+
         window.display();
     }
 
