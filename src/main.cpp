@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "RenderWindow.hpp"
+#include "Entity.hpp"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ int main(int argv, char* args[])
 
     SDL_Texture* grassTexture = window.loadTexture("res/img/grass_1.png");
 
+    Entity platform0(300, 300, grassTexture);
+
     bool gameRunning = true;
 
     SDL_Event event;
@@ -38,7 +41,7 @@ int main(int argv, char* args[])
         }
 
         window.clear();
-        window.render(grassTexture);
+        window.render(platform0);
         window.display();
     }
 
