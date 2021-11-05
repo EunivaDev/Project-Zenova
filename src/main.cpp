@@ -40,6 +40,18 @@ int main(int argv, char* args[])
 
     SDL_Event event;
 
+
+
+    /////////////////////////////////////
+    Vector2f playerPos(100, 100);
+
+    SDL_Texture* playerTexture = window.loadTexture("res/img/player.png");
+
+    Entity player(playerPos, playerTexture);
+    //////////////////////////////////////
+
+
+
     const float timeStep = 0.01;
     float accumulator = 0.0;
     float currentTime = utils::hireTimeInSeconds();
@@ -58,8 +70,50 @@ int main(int argv, char* args[])
         while (accumulator >= timeStep)
         {
             while (SDL_PollEvent(&event))
-                if (event.type == SDL_QUIT)
+            {
+                switch (event.type) 
+                {
+                case SDL_QUIT:
+                {
                     gameRunning = false;
+                    break;
+                }
+                //////////////////
+                case SDL_KEYDOWN:
+                {
+                    switch (event.key.keysym.scancode)
+                    {
+                    case SDL_SCANCODE_W:
+                    {
+                        playerPos.y -= 5;
+                        break;
+                    }
+                    case SDL_SCANCODE_A:
+                    {
+                        playerPos.x -= 5;
+                        break;
+                    }
+                    case SDL_SCANCODE_S:
+                    {
+                        playerPos.y += 5;
+                        break;
+                    }
+                    case SDL_SCANCODE_D:
+                    {
+                        playerPos.x += 5;
+                        break;
+                    }
+
+                    }
+                }
+                
+                /////////////////////////////////
+                }
+
+            }
+
+
+                
 
             accumulator -= timeStep;
         }
@@ -68,6 +122,10 @@ int main(int argv, char* args[])
 
         window.clear();
 
+        ///////////
+        player.setPos(playerPos);
+        window.render(player);
+        ///////////////
         for (Entity& p : platform)
             window.render(p);
 

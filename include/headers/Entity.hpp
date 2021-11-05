@@ -17,5 +17,7 @@ public:
     Vector2f& getPos();
     SDL_Texture* getTexture();
     SDL_Rect getCurrentFrame();
-
+    ////////////
+    void setPos(Vector2f p_pos);
+    ////////////
 };
