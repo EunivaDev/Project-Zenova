@@ -85,22 +85,22 @@ int main(int argv, char* args[])
                     {
                     case SDL_SCANCODE_W:
                     {
-                        playerPos.y -= 5;
+                        playerPos.y -= 32;
                         break;
                     }
                     case SDL_SCANCODE_A:
                     {
-                        playerPos.x -= 5;
+                        playerPos.x -= 32;
                         break;
                     }
                     case SDL_SCANCODE_S:
                     {
-                        playerPos.y += 5;
+                        playerPos.y += 32;
                         break;
                     }
                     case SDL_SCANCODE_D:
                     {
-                        playerPos.x += 5;
+                        playerPos.x += 32;
                         break;
                     }
 
